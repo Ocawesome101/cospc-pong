@@ -6,15 +6,65 @@ local w, h = term.getSize(2)
 
 local numbers = {
   [0] = {
+    "\15\0\0\15\15",
+    "\0\15\15\0\15",
+    "\0\15\15\0\15",
+    "\0\15\15\0\15",
+    "\15\0\0\15\15"
   }, {
+    "\15\15\0\15\15",
+    "\15\15\0\15\15",
+    "\15\15\0\15\15",
+    "\15\15\0\15\15",
+    "\15\15\0\15\15",
   }, {
+    "\0\0\0\15\15",
+    "\15\15\15\0\15",
+    "\15\15\0\15\15",
+    "\15\0\15\15\15",
+    "\0\0\0\0\15",
   }, {
+    "\0\0\0\15\15",
+    "\15\15\15\0\15",
+    "\15\0\0\15\15",
+    "\15\15\15\0\15",
+    "\0\0\0\15\15",
   }, {
+    "\0\15\0\15\15",
+    "\0\15\0\15\15",
+    "\0\0\0\0\15",
+    "\15\15\0\15\15",
+    "\15\15\0\15\15",
   }, {
+    "\0\0\0\0\15",
+    "\0\15\15\15\15",
+    "\0\0\0\15\15",
+    "\15\15\15\0\15",
+    "\0\0\0\15\15",
   }, {
+    "\15\0\0\0\15",
+    "\0\15\15\15\15",
+    "\0\0\0\15\15",
+    "\0\15\15\0\15",
+    "\15\0\0\25\15",
   }, {
+    "\0\0\0\0\15",
+    "\15\15\15\0\15",
+    "\15\15\0\15\15",
+    "\15\0\15\15\15",
+    "\0\15\15\15\15",
   }, {
+    "\15\0\0\15\15",
+    "\0\15\15\0\15",
+    "\15\0\0\15\15",
+    "\0\15\15\0\15",
+    "\15\0\0\15\15",
   }, {
+    "\15\0\0\15\15",
+    "\0\15\15\0\15",
+    "\15\0\0\0\15",
+    "\15\15\15\0\15",
+    "\0\0\0\15\15",
   }
 }
 
@@ -43,6 +93,18 @@ end
 
 local scoreA, scoreB = 0, 0
 
+local function drawScores()
+  local sa, sb = tostring(scoreA), tostring(scoreB)
+  for i=1, #sa, 1 do
+    local c = tonumber(sa:sub(i, i))
+    term.drawPixels(2+(i-1)*5, 2, numbers[c])
+  end
+  for i=1, #sb, 1 do
+    local c = tonumber(sb:sub(i, i))
+    term.drawPixels(2+(i-1)*5, h-7, numbers[c])
+  end
+end
+
 term.setGraphicsMode(2)
 local is = input.new(1/40)
 while true do
@@ -51,6 +113,7 @@ while true do
   drawBall()
   drawCenterLine()
   drawPaddles()
+  drawScores()
   term.setFrozen(false)
   ballX = ballX + ballDirX*ballSpeed
   ballY = ballY + ballDirY*ballSpeed
@@ -83,5 +146,11 @@ while true do
   end
   if is.pressed[keys.right] then
     paX = math.min(w - paddleWidth, paX + 4)
+  end
+  if is.pressed[keys.a] then
+    pbX = math.max(paddleWidth, pbX - 4)
+  end
+  if is.pressed[keys.d] then
+    pbX = math.min(w - paddleWidth, pbX + 4)
   end
 end
